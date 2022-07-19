@@ -42,8 +42,8 @@ impl Printer {
         Ok(())
     }
 
-    pub async fn print_text(&mut self, text: &str) -> Result<()> {
-        self.stream_mut()?.write_all(text.as_bytes()).await?;
+    pub async fn send_raw_bytes(&mut self, bytes: &[u8]) -> Result<()> {
+        self.stream_mut()?.write_all(bytes).await?;
         Ok(())
     }
 
