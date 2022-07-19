@@ -1,5 +1,6 @@
 use printrs::howdy;
 
-fn main() {
-    howdy();
+#[async_std::main]
+async fn main() {
+    howdy().await
 }
