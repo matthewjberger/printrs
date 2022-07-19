@@ -1,6 +1,3 @@
-use async_std::println;
-use colored::Colorize;
+mod printer;
 
-pub async fn howdy() {
-    println!("{}", "Howdy!".blue()).await;
-}
+pub use self::printer::*;
