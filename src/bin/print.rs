@@ -10,7 +10,13 @@ async fn main() -> Result<()> {
     let mut printer = Printer::new("192.168.0.172".to_string(), 9100);
 
     printer.connect().await?;
+
     printer.send_raw_bytes(PLACEHOLDER_TEXT_BYTES).await?;
+
+    printer
+        .print_text("Lorem ipsum dolor sit amet, consectetur adipiscing elit ...")
+        .await?;
+
     printer.disconnect().await?;
 
     Ok(())

@@ -42,6 +42,12 @@ impl Printer {
         Ok(())
     }
 
+    pub async fn print_text(&mut self, text: &str) -> Result<()> {
+        let command = format!("{}{}", ControlSequence::LineFeed.code(), text);
+        self.send_raw_bytes(command.as_bytes()).await?;
+        Ok(())
+    }
+
     pub async fn send_raw_bytes(&mut self, bytes: &[u8]) -> Result<()> {
         self.stream_mut()?.write_all(bytes).await?;
         Ok(())
@@ -55,5 +61,26 @@ impl Printer {
 
     fn stream_mut(&mut self) -> Result<&mut TcpStream> {
         self.stream.as_mut().ok_or(PrinterError::NotConnected)
+    }
+}
+
+pub enum ControlSequence {
+    LineFeed,
+    FormFeed,
+    CarriageReturn,
+    HorizontalTab,
+    VerticalTab,
+}
+
+impl ControlSequence {
+    pub fn code(&self) -> String {
+        match self {
+            ControlSequence::LineFeed => "LF",
+            ControlSequence::FormFeed => "FF",
+            ControlSequence::CarriageReturn => "CR",
+            ControlSequence::HorizontalTab => "HT",
+            ControlSequence::VerticalTab => "VT",
+        }
+        .to_string()
     }
 }
